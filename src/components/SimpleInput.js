@@ -2,23 +2,19 @@ import { useState } from "react";
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
-  const [nameIsValid, setNameIsValid] = useState(false); //init value must not be true
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); //->solve above problem
   //touch means touch to the input field and work on it
+
+  const enteredNameIsValid = enteredName.trim() !== "";
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
-    setEnteredNameTouched(false);
+    //once component rendered when enter a keystroke, enteredNameIsValid is true
   };
 
   const nameInputBlurHandler = () => {
     setEnteredNameTouched(true); //only when blur -> validate input values
-
-    if (enteredName.trim() === "") {
-      setNameIsValid(false);
-      return;
-    }
-
-    setNameIsValid(true);
   };
 
   const formSubmitHandler = (event) => {
@@ -26,16 +22,13 @@ const SimpleInput = (props) => {
 
     setEnteredNameTouched(true); //only when press submit btn -> validate input value
 
-    if (enteredName.trim() === "") {
-      setNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setNameIsValid(true);
     setEnteredName("");
+    setEnteredNameTouched(false);
   };
-
-  const nameInputIsInvalid = !nameIsValid && enteredNameTouched;
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
