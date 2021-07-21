@@ -4,15 +4,27 @@ const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState("");
   const [nameIsValid, setNameIsValid] = useState(false); //init value must not be true
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); //->solve above problem
-
+  //touch means touch to the input field and work on it
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+    setEnteredNameTouched(false);
+  };
+
+  const nameInputBlurHandler = () => {
+    setEnteredNameTouched(true); //only when blur -> validate input values
+
+    if (enteredName.trim() === "") {
+      setNameIsValid(false);
+      return;
+    }
+
+    setNameIsValid(true);
   };
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    setEnteredNameTouched(true);
+    setEnteredNameTouched(true); //only when press submit btn -> validate input value
 
     if (enteredName.trim() === "") {
       setNameIsValid(false);
@@ -37,6 +49,7 @@ const SimpleInput = (props) => {
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid && (
