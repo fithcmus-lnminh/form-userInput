@@ -32,6 +32,10 @@ const SimpleInput = (props) => {
       return;
     }
 
+    if (!enteredEmailIsValid) {
+      return;
+    }
+
     resetNameInput();
     resetEmailInput();
   };
